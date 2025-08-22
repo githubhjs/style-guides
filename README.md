@@ -3,8 +3,8 @@
 This repository contains style guides curated by lowRISC for use in our
 code and documentation.
 
-- [SystemVerilog style guide](VerilogCodingStyle.md)
-- [Coding Style Guide for Design Verification](DVCodingStyle.md)
+- [SystemVerilog style guide](VerilogCodingStyle.zh-TW.md)
+- [Coding Style Guide for Design Verification](DVCodingStyle.zh-TW.md)
 
 We invite issues and pull requests to add clarity to these guides.
 

@@ -1,4 +1,4 @@
-# lowRISC Style Guides
+# lowRISC Style Guides（中文版）
 
 This repository contains style guides curated by lowRISC for use in our
 code and documentation.

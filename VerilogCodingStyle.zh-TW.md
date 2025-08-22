@@ -28,15 +28,46 @@ Verilog 是 lowRISC Comportable IP 設計的主要邏輯描述語言。由於 Ve
 - 2 空白縮排（不要使用 Tab）
 - 每行最大 100 字元（建議），軟限制
 - 大括號風格與 C++ 相同（例如，函數定義的左大括號與函數名稱同行）
+## 命名規範
 
----
+- 所有識別符號必須使用小寫字母與底線（`snake_case`）。
+- 模組名稱、介面名稱應具有描述性，例如 `fifo_sync` 或 `arbiter_fixed`。
+- 輸入輸出埠應明確反映其功能，例如：
+  - `clk_i`：輸入時鐘
+  - `rst_ni`：低有效非同步重設（_ni 表示 negative logic input）
+  - `req_i`、`gnt_o`：請求與授權訊號
+- 類型定義加 `_t` 後綴，例如 `state_e`、`fsm_state_t`。
 
-TODO:
-- 命名規則
-- 模組與介面
-- 註解風格
-- 時序與時鐘結構
-- 觸發邊緣與重設
-- 多時鐘域與 CDC
-- 設計與可合成性最佳實踐
+## 模組與介面
 
+- 每個模組必須位於一個單獨的 `.sv` 檔案中，且檔名需與模組名稱一致。
+- 使用 SystemVerilog 介面（interface）封裝複雜的匯流排或握手訊號。
+- 模組埠順序建議如下排列（但可依邏輯群組微調）：
+  1. 時鐘與重設（`clk_i`, `rst_ni`）
+  2. 控制信號（如使能、啟動）
+  3. 資料通路（`data_i`, `data_o`）
+  4. 狀態回報或握手信號（`valid`, `ready`, `gnt` 等）
+
+## 註解風格
+
+- 每個模組需附上簡要註解描述其功能。
+- 使用 `//` 單行註解，保持簡潔清楚。
+- 用 `/** ... */` 多行註解於必要時補充背景說明或介面協定。
+
+## 時序與時鐘結構
+
+- 僅使用正緣觸發（`posedge clk_i`），除非有特殊理由。
+- 所有重設必須為非同步輸入、同步釋放。
+- 重設信號應命名為 `rst_ni`（低有效），並放置於邏輯區塊最前面。
+
+### 建議的時序區塊格式：
+
+```systemverilog
+always_ff @(posedge clk_i or negedge rst_ni) begin
+  if (!rst_ni) begin
+    // reset logic
+  end else begin
+    // sequential logic
+  endendendsome
+end
+```
